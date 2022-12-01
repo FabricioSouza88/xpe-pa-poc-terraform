@@ -1,2 +1,3 @@
 .tfplan.txt
 .terraform/
+environments/*.tfvars
