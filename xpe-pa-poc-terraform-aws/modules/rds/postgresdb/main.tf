@@ -60,7 +60,6 @@ resource "aws_db_instance" "postgres_instance" {
   availability_zone      = "${var.db_region}"
   allocated_storage      = 5
   engine                 = "postgres"
-  engine_version         = "13.1"
   username               = "${var.db_username}"
   password               = "${var.db_password}"
   db_subnet_group_name   = aws_db_subnet_group.postgres_subnet.name

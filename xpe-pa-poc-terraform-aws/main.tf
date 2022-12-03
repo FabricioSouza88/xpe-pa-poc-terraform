@@ -41,7 +41,6 @@ module "ec2-instances" {
         vm.name => vm
     }
     aws_ec2_name    = each.value.name
-    // ip_address      = each.value.ip_address
     instance_type   = each.value.instance_type
 }
 

@@ -1,16 +1,34 @@
+data "aws_ami" "ubuntu" {
+  most_recent = true
+
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+
+  owners = ["099720109477"] # Canonical
+}
+
+data "aws_key_pair" "main" {
+  key_name           = "key-${var.aws_ec2_name}"
+  include_public_key = true
+
+  filter {
+    name   = "tag:Component"
+    values = ["web"]
+  }
+}
+
 resource "aws_instance" "main" {
-  /*name = "${var.aws_ec2_name}"
-
-  create_spot_instance = true
-  spot_price             = "0.60"
-  spot_type              = "persistent"*/
-
-  ami                    = "ami-0163d8cef65cb85c3"
+  ami                    = data.aws_ami.ubuntu.id
   instance_type          = "${var.instance_type}"
-  key_name               = "user1"
+  key_name               = data.aws_key_pair.main.key_name
   monitoring             = true
-  vpc_security_group_ids = ["sg-12345678"]
-  subnet_id              = "subnet-eddcdzz4"
 
   tags = {
     Name        = "aws-ec2-${var.aws_ec2_name}"
